@@ -47,16 +47,17 @@ if ($_POST) {
 
         foreach($aProductos as $producto){
             if($nombreProducto == $producto["nombre"]){
-                $nombreCompra = $producto["nombre"];
-                $codigoCompra = $producto["codigo"];
-                $stockCompra = $producto["stock"];
-                $precioCompra = $producto["precio"];
+                $aCompras = array("nombre" => $producto["nombre"], 
+                            "codigo" => $producto["codigo"], 
+                            "stock" => $producto["stock"], 
+                            "precio" => $producto["precio"]
+                        );
 
-                
+                print_r($aCompras);
                 
             }
         }
-        $aCompras = array("nombre" => $nombreCompra, "codigo" => $codigoCompra, "stock" => $stockCompra, "precio" => $precioCompra);
+        
 
         
         $jsonCompra = json_encode($aCompras);
@@ -66,7 +67,7 @@ if ($_POST) {
         $jsonCompra = file_get_contents("compra.txt");
         $aCompras = json_decode($jsonCompra, associative: true);
 
-        print_r($aCompras);
+        
 
         
 
@@ -184,7 +185,7 @@ if ($_POST) {
                         <tbody>
                             <?php
                             if(isset($_POST["btnCompra"])){
-                                foreach($aCompras as $compra){ ?>
+                                //foreach($aCompras as $compra){ ?>
                                     <tr>
                                         <td><?php //echo $id; ?></td>
                                         <td><?php echo $aCompras["codigo"]; ?></td>
@@ -194,7 +195,7 @@ if ($_POST) {
                                         <td><a href=""><i class="bi bi-trash3"></i></td>
                                     </tr>      
                             <?php  } ?>
-                        <?php } ?>
+                        <?php //} ?>
                         </tbody>
                     </table>
                 </div>

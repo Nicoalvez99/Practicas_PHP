@@ -1,0 +1,1 @@
+{"nombre":"Oreo","codigo":"7676987087","stock":"50","precio":"200"}{"nombre":"Kesitas","codigo":"587657899","stock":"50","precio":"350"}
