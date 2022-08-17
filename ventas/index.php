@@ -64,7 +64,7 @@ if ($_POST) {
         
 
         $jsonCompra = file_get_contents("compra.txt");
-        $aCompras = json_decode($jsonCompra, true);
+        $aCompras = json_decode($jsonCompra, associative: true);
 
         print_r($aCompras);
 
@@ -184,9 +184,9 @@ if ($_POST) {
                         <tbody>
                             <?php
                             if(isset($_POST["btnCompra"])){
-                                foreach($aCompras as $id => $compra){ ?>
+                                foreach($aCompras as $compra){ ?>
                                     <tr>
-                                        <td><?php echo $id; ?></td>
+                                        <td><?php //echo $id; ?></td>
                                         <td><?php echo $aCompras["codigo"]; ?></td>
                                         <td><?php echo $aCompras["nombre"]; ?></td>
                                         <td><?php echo $cantidadProducto; ?></td>
