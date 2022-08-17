@@ -15,6 +15,7 @@ if (file_exists("productos.txt")) { //si el archivo "datos.txt" existe
 if(file_exists("compra.txt")){
     $jsonCompra = file_get_contents("compra.txt");
     $aCompras = json_decode($jsonCompra, true);
+    print_r($aCompras);
 } else {
     $aCompras = array();
 }
@@ -50,17 +51,22 @@ if ($_POST) {
                 $codigoCompra = $producto["codigo"];
                 $stockCompra = $producto["stock"];
                 $precioCompra = $producto["precio"];
+
+                
                 
             }
         }
         $aCompras = array("nombre" => $nombreCompra, "codigo" => $codigoCompra, "stock" => $stockCompra, "precio" => $precioCompra);
 
-        print_r($aCompras);
+        
         $jsonCompra = json_encode($aCompras);
-        file_put_contents("compra.txt", $jsonCompra);
+        file_put_contents("compra.txt", $jsonCompra, FILE_APPEND);
+        
 
-        //$jsonCompra = file_get_contents("compra.txt");
-        //$aCompras = json_decode($jsonCompra, true);
+        $jsonCompra = file_get_contents("compra.txt");
+        $aCompras = json_decode($jsonCompra, true);
+
+        print_r($aCompras);
 
         
 
@@ -178,16 +184,16 @@ if ($_POST) {
                         <tbody>
                             <?php
                             if(isset($_POST["btnCompra"])){
-                                //foreach($aCompras as $id => $compra){ ?>
+                                foreach($aCompras as $id => $compra){ ?>
                                     <tr>
-                                        <td><?php //echo $id; ?></td>
+                                        <td><?php echo $id; ?></td>
                                         <td><?php echo $aCompras["codigo"]; ?></td>
                                         <td><?php echo $aCompras["nombre"]; ?></td>
                                         <td><?php echo $cantidadProducto; ?></td>
                                         <td><?php echo $aCompras["precio"] * $cantidadProducto; ?></td>
                                         <td><a href=""><i class="bi bi-trash3"></i></td>
                                     </tr>      
-                            <?php  //} ?>
+                            <?php  } ?>
                         <?php } ?>
                         </tbody>
                     </table>

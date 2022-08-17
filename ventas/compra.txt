@@ -1,1 +1,1 @@
-{"nombre":"MyM","codigo":"7867867969","stock":"40","precio":"240"}
+[{"nombre":"Kesitas","codigo":"587657899","stock":"50","precio":"350"},{"nombre":"Oreo","codigo":"7676987087","stock":"50","precio":"200"}]
