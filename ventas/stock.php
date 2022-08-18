@@ -27,6 +27,8 @@ if($_POST){
             "precio" => $precio
 
         );
+        $jsonProductos = json_encode($aProductos);
+        file_put_contents("productos.txt", $jsonProductos);
     }
 }
 
@@ -134,7 +136,7 @@ if(isset($_GET["do"]) && $_GET["do"] == "eliminar"){
                             <td><?php echo $producto["codigo"]; ?></td>
                             <td><?php echo $producto["nombre"]; ?></td>
                             <td><?php echo $producto["stock"]; ?></td>
-                            <td><?php echo $producto["precio"]; ?></td>
+                            <td><?php echo "$" . $producto["precio"]; ?></td>
                             <td><a href="?id=<?php echo $id ?>&do=editar" id="elegir">Elegir</a></td>
                             <td><a href="stock.php?id=<?php echo $id ?>&do=eliminar"><i class="bi bi-trash3"></i></a></td>
                             
