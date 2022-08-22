@@ -115,7 +115,7 @@ if(isset($_GET["do"]) && $_GET["do"] == "eliminar"){
             <div class="col-12 my-3">
                 <h1>Stock de Productos</h1>
             </div>
-            <button data-bs-toggle="modal" data-bs-target="#exampleModal" class="btn btn-secondary" id="editar">Editar</button>
+            <button data-bs-toggle="modal" <?php echo isset($id) && $id == ""? "disabled" : ""; ?> data-bs-target="#exampleModal" class="btn btn-secondary" id="editar">Editar</button>
         </div>
         <div class="row">
             <table class="table table-hover border">

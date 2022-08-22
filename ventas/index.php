@@ -88,11 +88,21 @@ function sumarTotal($aCompras)
     }
 }
 
-if(isset($_POST["btnVuelto"])){
+if (isset($_POST["btnVuelto"])) {
     $pago = trim($_POST["numVuelto"]);
     $vuelto = $pago - sumarTotal($aCompras);
 } else {
     $vuelto = 0;
+}
+
+if (isset($_REQUEST["btnCobrar"])) {
+    foreach ($aProductos as $producto) {
+        foreach ($aCompras as $compra) {
+            if ($producto["nombre"] == $compra["nombre"]) {
+                $producto["stock"] = $producto["stock"] - $compra["cantidad"];
+            }
+        }
+    }
 }
 
 
@@ -114,17 +124,32 @@ if(isset($_POST["btnVuelto"])){
 
 <body>
     <header class="container-fluid mb-3">
-        <nav class="navbar navbar-dark bg-primary">
+        <nav class="navbar navbar-expand-lg bg-primary">
             <div class="container-fluid">
-                <a class="navbar-brand" href="#">Sistema Ventas</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                <a class="navbar-brand" style="color: #fff" href="index.php">Plataforma de Ventas</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-                    <div class="navbar-nav">
-                        <a class="nav-link active" aria-current="page" href="index.php">Home</a>
-                        <a class="nav-link" href="stock.php">Stock</a>
-                    </div>
+                <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link active" style="color: #fff" aria-current="page" href="index.php">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" style="color: #fff" href="stock.php">Mis Productos</a>
+                        </li>
+                        
+                        <li class="nav-item dropdown" >
+                            <a class="nav-link dropdown-toggle" style="color: #fff" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Dropdown link
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="#">Action</a></li>
+                                <li><a class="dropdown-item" href="#">Another action</a></li>
+                                <li><a class="dropdown-item" href="#">Something else here</a></li>
+                            </ul>
+                        </li>
+                    </ul>
                 </div>
             </div>
         </nav>
@@ -208,13 +233,15 @@ if(isset($_POST["btnVuelto"])){
                                                 <label for="numVuelto">¿Con cuánto paga?</label>
                                                 <input type="number" name="numVuelto" class="form-control">
                                             </div>
-                                            <button type="submit" name="btnVuelto" class="btn btn-primary my-2">Vuelto</button>
+                                            <button type="submit" name="btnVuelto" data-bs-toggle="modal" data-bs-target="#staticBackdrop" class="btn btn-primary my-2">Vuelto</button>
                                         </form>
-                                        <h5>Su vuelto es: $<?php echo isset($vuelto)? number_format($vuelto, 2, ".", ",") : ""; ?> </h5>
+                                        <h5>Su vuelto es: $<?php echo isset($vuelto) ? number_format($vuelto, 2, ".", ",") : ""; ?> </h5>
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                        <button type="button" class="btn btn-success">Cobrar</button>
+                                        <form action="" method="post">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                            <button type="submit" name="btnCobrar" class="btn btn-success">Cobrar</button>
+                                        </form>
                                     </div>
                                 </div>
                             </div>
