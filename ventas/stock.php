@@ -3,8 +3,8 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-if (file_exists("productos.txt")) {
-    $jsonProductos = file_get_contents("productos.txt");
+if (file_exists("productos.json")) {
+    $jsonProductos = file_get_contents("productos.json");
     $aProductos = json_decode($jsonProductos, true);
 } else {
     $aProductos = array();
@@ -28,14 +28,14 @@ if($_POST){
 
         );
         $jsonProductos = json_encode($aProductos);
-        file_put_contents("productos.txt", $jsonProductos);
+        file_put_contents("productos.json", $jsonProductos);
     }
 }
 
 if(isset($_GET["do"]) && $_GET["do"] == "eliminar"){
     unset($aProductos[$id]);
     $jsonProductos = json_encode($aProductos);
-    file_put_contents("productos.txt", $jsonProductos);
+    file_put_contents("productos.json", $jsonProductos);
     header("Location: stock.php");
 }
 
