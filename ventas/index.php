@@ -11,14 +11,13 @@ if (file_exists("productos.json")) { //si el archivo "datos.txt" existe
     $aProductos = array();  //Si no existe arranco el array vacío.
 }
 
-
 if (file_exists("compra.json")) {
     $jsonCompra = file_get_contents("compra.json");
     $aCompras = json_decode($jsonCompra, associative: true);
 } else {
     $aCompras = array();
 }
-
+$id = isset($_GET["id"]) && $_GET["id"] >= 0? $_GET["id"] : "";
 if ($_POST) {
 
     if (isset($_POST["btnNuevoProducto"])) {
@@ -64,9 +63,30 @@ if ($_POST) {
         $jsonNuevoProducto = file_get_contents("compra.json");
         $aCompras = json_decode($jsonNuevoProducto, associative: true);
     }
+    if(isset($_POST["btnCobrar"])){
+
+    }
 }
 
+if(isset($_GET["do"]) && $_GET["do"] == "eliminar"){
+    unset($aCompras[$id]);
+    $jsonNuevoProducto = json_encode($aCompras);
+    file_put_contents("compra.json", $jsonNuevoProducto);
+    header("Location: index.php");
+}
 
+function sumarTotal($aCompras){
+   if($aCompras != array()){
+        $valor = 0;
+        foreach($aCompras as $compra){
+            $valor = $valor + $compra["precio"];
+        }
+        return number_format($valor, 2, ".", ",");
+   } else {
+        $valor = 0;
+        return $valor;
+   }
+}
 
 
 
@@ -161,8 +181,8 @@ if ($_POST) {
                         </div>
                     </div>
                     <div class="col-12 py-3">
-                        <h5 style="color: green;">Total: </h5>
-                        
+                        <h3 style="color: green;">Total: <?php echo "$" . sumarTotal($aCompras); ?> </h3>
+                        <button type="submit" name="btnCobrar" class="btn btn-success">Cobrar</button>
                     </div>
                 </div>
             </div>
@@ -188,7 +208,7 @@ if ($_POST) {
                                         <td><?php echo $compra["nombre"]; ?></td>
                                         <td><?php echo $compra["cantidad"]; ?></td>
                                         <td><?php echo "$" . $compra["precio"]; ?></td>
-                                        <td><a href=""><i class="bi bi-trash3"></i></td>
+                                        <td><a href="index.php?id=<?php echo $id; ?>&do=eliminar"><i class="bi bi-trash3"></i></td>
                                     </tr>
                                 <?php  } ?>
                             <?php } ?>
