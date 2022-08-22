@@ -17,7 +17,7 @@ if (file_exists("compra.json")) {
 } else {
     $aCompras = array();
 }
-$id = isset($_GET["id"]) && $_GET["id"] >= 0? $_GET["id"] : "";
+$id = isset($_GET["id"]) && $_GET["id"] >= 0 ? $_GET["id"] : "";
 if ($_POST) {
 
     if (isset($_POST["btnNuevoProducto"])) {
@@ -63,29 +63,36 @@ if ($_POST) {
         $jsonNuevoProducto = file_get_contents("compra.json");
         $aCompras = json_decode($jsonNuevoProducto, associative: true);
     }
-    if(isset($_POST["btnCobrar"])){
-
+    if (isset($_POST["btnCobrar"])) {
     }
 }
 
-if(isset($_GET["do"]) && $_GET["do"] == "eliminar"){
+if (isset($_GET["do"]) && $_GET["do"] == "eliminar") {
     unset($aCompras[$id]);
     $jsonNuevoProducto = json_encode($aCompras);
     file_put_contents("compra.json", $jsonNuevoProducto);
     header("Location: index.php");
 }
 
-function sumarTotal($aCompras){
-   if($aCompras != array()){
+function sumarTotal($aCompras)
+{
+    if ($aCompras != array()) {
         $valor = 0;
-        foreach($aCompras as $compra){
+        foreach ($aCompras as $compra) {
             $valor = $valor + $compra["precio"];
         }
-        return number_format($valor, 2, ".", ",");
-   } else {
+        return $valor;
+    } else {
         $valor = 0;
         return $valor;
-   }
+    }
+}
+
+if(isset($_POST["btnVuelto"])){
+    $pago = trim($_POST["numVuelto"]);
+    $vuelto = $pago - sumarTotal($aCompras);
+} else {
+    $vuelto = 0;
 }
 
 
@@ -181,8 +188,37 @@ function sumarTotal($aCompras){
                         </div>
                     </div>
                     <div class="col-12 py-3">
-                        <h3 style="color: green;">Total: <?php echo "$" . sumarTotal($aCompras); ?> </h3>
-                        <button type="submit" name="btnCobrar" class="btn btn-success">Cobrar</button>
+                        <h3 style="color: green;">Total: <?php echo "$" . number_format(sumarTotal($aCompras), 2, ".", ","); ?> </h3>
+                        <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                            Cobrar
+                        </button>
+
+                        <!-- Modal -->
+                        <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="staticBackdropLabel">Cobrar</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <h3 style="color: green;">Total: <?php echo "$" . number_format(sumarTotal($aCompras), 2, ".", ","); ?></h3>
+                                        <form action="" method="post">
+                                            <div class="col-12">
+                                                <label for="numVuelto">¿Con cuánto paga?</label>
+                                                <input type="number" name="numVuelto" class="form-control">
+                                            </div>
+                                            <button type="submit" name="btnVuelto" class="btn btn-primary my-2">Vuelto</button>
+                                        </form>
+                                        <h5>Su vuelto es: $<?php echo isset($vuelto)? number_format($vuelto, 2, ".", ",") : ""; ?> </h5>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                        <button type="button" class="btn btn-success">Cobrar</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
