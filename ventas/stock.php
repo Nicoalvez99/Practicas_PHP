@@ -13,8 +13,8 @@ if (file_exists("productos.json")) {
 $id = isset($_GET["id"]) && $_GET["id"] >= 0 ? $_GET["id"] : "";
 
 
-if($_POST){
-    if(isset($_POST["btnNuevoProducto"])){
+if ($_POST) {
+    if (isset($_POST["btnNuevoProducto"])) {
         $nombre = trim($_POST["txtEditarNuevoProducto"]);
         $codigo = trim($_POST["numEditarCodigo"]);
         $stock = trim($_POST["numEditarCantidad"]);
@@ -32,7 +32,7 @@ if($_POST){
     }
 }
 
-if(isset($_GET["do"]) && $_GET["do"] == "eliminar"){
+if (isset($_GET["do"]) && $_GET["do"] == "eliminar") {
     unset($aProductos[$id]);
     $jsonProductos = json_encode($aProductos);
     file_put_contents("productos.json", $jsonProductos);
@@ -67,23 +67,23 @@ if(isset($_GET["do"]) && $_GET["do"] == "eliminar"){
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    
+
                     <form action="" method="post">
                         <div class="col-12 my-3">
                             <label for="txtEditarNuevoProducto">Nombre</label>
-                            <input type="text" name="txtEditarNuevoProducto" class="form-control" id="txtEditarNuevoProducto" value="<?php echo isset($aProductos[$id])? $aProductos[$id]["nombre"] : ""; ?>">
+                            <input type="text" name="txtEditarNuevoProducto" class="form-control" id="txtEditarNuevoProducto" value="<?php echo isset($aProductos[$id]) ? $aProductos[$id]["nombre"] : ""; ?>">
                         </div>
                         <div class="col-12 my-3">
                             <label for="numEditarCodigo">Código</label>
-                            <input type="number" name="numEditarCodigo" id="" class="form-control" value="<?php echo isset($aProductos[$id])? $aProductos[$id]["codigo"] : ""; ?>">
+                            <input type="number" name="numEditarCodigo" id="" class="form-control" value="<?php echo isset($aProductos[$id]) ? $aProductos[$id]["codigo"] : ""; ?>">
                         </div>
                         <div class="col-12 my-3">
                             <label for="numEditarCantidad">Stock</label>
-                            <input type="number" name="numEditarCantidad" id="" class="form-control" value="<?php echo isset($aProductos[$id])? $aProductos[$id]["stock"] : ""; ?>">
+                            <input type="number" name="numEditarCantidad" id="" class="form-control" value="<?php echo isset($aProductos[$id]) ? $aProductos[$id]["stock"] : ""; ?>">
                         </div>
                         <div class="col-12 my-3">
                             <label for="numEditarPrecio">Precio</label>
-                            <input type="number" name="numEditarPrecio" id="" class="form-control" value="<?php echo isset($aProductos[$id])? $aProductos[$id]["precio"] : ""; ?>">
+                            <input type="number" name="numEditarPrecio" id="" class="form-control" value="<?php echo isset($aProductos[$id]) ? $aProductos[$id]["precio"] : ""; ?>">
                         </div>
 
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
@@ -95,18 +95,35 @@ if(isset($_GET["do"]) && $_GET["do"] == "eliminar"){
         </div>
     </div>
     <header class="container-fluid mb-3">
-        <nav class="navbar navbar-dark bg-primary">
+    <nav class="navbar navbar-expand-lg bg-primary">
             <div class="container-fluid">
-                <a class="navbar-brand" href="#">Sistema Ventas</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                <a class="navbar-brand" style="color: #fff" href="index.php">Plataforma de Ventas</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-                    <div class="navbar-nav">
-                        <a class="nav-link active" aria-current="page" href="index.php">Home</a>
-                        <a class="nav-link" href="stock.php">Stock</a>
-                    </div>
+                <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link active" style="color: #fff" aria-current="page" href="index.php"><i class="bi bi-house-door" style="font-size: 20px;"></i></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" style="color: #fff" href="stock.php">Mis Productos</a>
+                        </li>
+
+
+                    </ul>
+
                 </div>
+                <li class="nav-item dropdown my-auto" style="list-style: none;">
+                    <a class="nav-link dropdown-toggle" style="color: #fff" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="bi bi-person" style="font-size: 20px;"></i>
+                        Mi Cuenta
+                    </a>
+                    <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="#">Editar</a></li>
+                        <li><a class="dropdown-item" href="login.php">Cerrar sesion</a></li>
+                    </ul>
+                </li>
             </div>
         </nav>
     </header>
@@ -115,7 +132,7 @@ if(isset($_GET["do"]) && $_GET["do"] == "eliminar"){
             <div class="col-12 my-3">
                 <h1>Stock de Productos</h1>
             </div>
-            <button data-bs-toggle="modal" <?php echo isset($id) && $id == ""? "disabled" : ""; ?> data-bs-target="#exampleModal" class="btn btn-secondary" id="editar">Editar</button>
+            <button data-bs-toggle="modal" <?php echo isset($id) && $id == "" ? "disabled" : ""; ?> data-bs-target="#exampleModal" class="btn btn-secondary" id="editar">Editar</button>
         </div>
         <div class="row">
             <table class="table table-hover border">
@@ -139,7 +156,7 @@ if(isset($_GET["do"]) && $_GET["do"] == "eliminar"){
                             <td><?php echo "$" . $producto["precio"]; ?></td>
                             <td><a href="?id=<?php echo $id ?>&do=editar" id="elegir">Elegir</a></td>
                             <td><a href="stock.php?id=<?php echo $id ?>&do=eliminar"><i class="bi bi-trash3"></i></a></td>
-                            
+
                         </tr>
                     <?php } ?>
                 </tbody>
@@ -147,7 +164,7 @@ if(isset($_GET["do"]) && $_GET["do"] == "eliminar"){
         </div>
     </main>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
-<script src="main.js"></script>
+    <script src="main.js"></script>
 </body>
 
 </html>

@@ -100,6 +100,8 @@ if (isset($_REQUEST["btnCobrar"])) {
         foreach ($aCompras as $compra) {
             if ($producto["nombre"] == $compra["nombre"]) {
                 $producto["stock"] = $producto["stock"] - $compra["cantidad"];
+                array_replace($aProductos, $producto);
+                //print_r($aProductos);
             }
         }
     }
@@ -133,24 +135,26 @@ if (isset($_REQUEST["btnCobrar"])) {
                 <div class="collapse navbar-collapse" id="navbarNavDropdown">
                     <ul class="navbar-nav">
                         <li class="nav-item">
-                            <a class="nav-link active" style="color: #fff" aria-current="page" href="index.php">Home</a>
+                            <a class="nav-link active" style="color: #fff" aria-current="page" href="index.php"><i class="bi bi-house-door" style="font-size: 20px;"></i></a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" style="color: #fff" href="stock.php">Mis Productos</a>
                         </li>
-                        
-                        <li class="nav-item dropdown" >
-                            <a class="nav-link dropdown-toggle" style="color: #fff" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Dropdown link
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="#">Action</a></li>
-                                <li><a class="dropdown-item" href="#">Another action</a></li>
-                                <li><a class="dropdown-item" href="#">Something else here</a></li>
-                            </ul>
-                        </li>
+
+
                     </ul>
+
                 </div>
+                <li class="nav-item dropdown my-auto" style="list-style: none;">
+                    <a class="nav-link dropdown-toggle" style="color: #fff" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="bi bi-person" style="font-size: 20px;"></i>
+                        Mi Cuenta
+                    </a>
+                    <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="#">Editar</a></li>
+                        <li><a class="dropdown-item" href="login.php">Cerrar sesion</a></li>
+                    </ul>
+                </li>
             </div>
         </nav>
     </header>
