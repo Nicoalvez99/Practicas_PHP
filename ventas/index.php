@@ -96,15 +96,23 @@ if (isset($_POST["btnVuelto"])) {
 }
 
 if (isset($_REQUEST["btnCobrar"])) {
-    foreach ($aProductos as $producto) {
+    foreach ($aProductos as $id => $producto) {
         foreach ($aCompras as $compra) {
-            if ($producto["nombre"] == $compra["nombre"]) {
+            if ($producto["stock"] == $compra["stock"]) {
                 $producto["stock"] = $producto["stock"] - $compra["cantidad"];
-                array_replace($aProductos, $producto);
-                //print_r($aProductos);
+                
+                print_r($producto);
+                array_replace($aProductos[$id], $producto);
+                print_r($aProductos[$id]);
+                
+                  
+                
             }
         }
     }
+    $aCompras = array();
+    $jsonCompra = json_encode($aCompras);
+    file_put_contents("compra.json", $jsonCompra);
 }
 
 
@@ -218,10 +226,14 @@ if (isset($_REQUEST["btnCobrar"])) {
                     </div>
                     <div class="col-12 py-3">
                         <h3 style="color: green;">Total: <?php echo "$" . number_format(sumarTotal($aCompras), 2, ".", ","); ?> </h3>
-                        <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-                            Cobrar
+                        <h5>Su vuelto es: $<?php echo isset($vuelto) ? number_format($vuelto, 2, ".", ",") : ""; ?> </h5>
+                        <form action="" method="post">
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                            Vuelto
                         </button>
-
+                        
+                            <button type="submit" name="btnCobrar" class="btn btn-success">Cobrar</button>
+                        </form>
                         <!-- Modal -->
                         <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                             <div class="modal-dialog">
@@ -239,13 +251,10 @@ if (isset($_REQUEST["btnCobrar"])) {
                                             </div>
                                             <button type="submit" name="btnVuelto" data-bs-toggle="modal" data-bs-target="#staticBackdrop" class="btn btn-primary my-2">Vuelto</button>
                                         </form>
-                                        <h5>Su vuelto es: $<?php echo isset($vuelto) ? number_format($vuelto, 2, ".", ",") : ""; ?> </h5>
+                                        
                                     </div>
                                     <div class="modal-footer">
-                                        <form action="" method="post">
                                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                            <button type="submit" name="btnCobrar" class="btn btn-success">Cobrar</button>
-                                        </form>
                                     </div>
                                 </div>
                             </div>

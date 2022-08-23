@@ -53,11 +53,11 @@ if($_POST){
                                 <?php endif; ?>
                                 <div class="col-12 my-2">
                                     <label for="txtnombre">Nombre:</label>
-                                    <input type="text" name="txtNombre" class="form-control">
+                                    <input type="text" name="txtNombre" class="form-control" required>
                                 </div>
                                 <div class="col-12 my-2">
                                     <label for="txtContraseña">Contraseña:</label>
-                                    <input type="password" name="txtContraseña" class="form-control" id="">
+                                    <input type="password" name="txtContraseña" class="form-control" id="" required>
                                 </div>
                                 <div class="col-12 my-2">
                                     <button type="submit" name="btnEntrar" class="btn btn-primary">Entrar</button>
