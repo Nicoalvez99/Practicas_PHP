@@ -39,7 +39,7 @@ if ($_POST) {
     if (isset($_POST["btnCompra"])) {
         $nombreProducto = trim($_POST["txtProducto"]);
         $cantidadProducto = $_POST["numCantidad"] == "" ? $_POST["numCantidad"] = 1 : trim($_POST["numCantidad"]);
-
+        
         foreach ($aProductos as $producto) {
             if ($nombreProducto == $producto["nombre"]) {
 
@@ -47,21 +47,29 @@ if ($_POST) {
                 $codigo = $producto["codigo"];
                 $stock = $producto["stock"];
                 $precio = $producto["precio"] * $cantidadProducto;
+
+                $aCompras[] = array(
+                    "nombre" => $nombre,
+                    "codigo" => $codigo,
+                    "cantidad" => $cantidadProducto,
+                    "stock" => $stock,
+                    "precio" => $precio
+                );
+            
+            
+        
+                $jsonCompra = json_encode($aCompras);
+                file_put_contents("compra.json", $jsonCompra);
+        
+                $jsonNuevoProducto = file_get_contents("compra.json");
+                $aCompras = json_decode($jsonNuevoProducto, associative: true);
+            } else {
+                $productoNoExiste = true;
             }
+        
         }
-        $aCompras[] = array(
-            "nombre" => $nombre,
-            "codigo" => $codigo,
-            "cantidad" => $cantidadProducto,
-            "stock" => $stock,
-            "precio" => $precio
-        );
-
-        $jsonCompra = json_encode($aCompras);
-        file_put_contents("compra.json", $jsonCompra);
-
-        $jsonNuevoProducto = file_get_contents("compra.json");
-        $aCompras = json_decode($jsonNuevoProducto, associative: true);
+       
+        
     }
     if (isset($_POST["btnCobrar"])) {
     }
@@ -100,27 +108,13 @@ if (isset($_REQUEST["btnCobrar"])) {
         
         foreach ($aCompras as $compra) {
             if ($producto["nombre"] == $compra["nombre"]) {
-                
-                
-                
                 unset($aProductos[$id]);
-                
                 $jsonProductos = json_encode($aProductos);
                 file_put_contents("productos.json", $jsonProductos);
-
                 $producto["stock"] = $producto["stock"] - $compra["cantidad"];
-                
-                
                 array_push($aProductos, $producto);
                 $jsonProductos = json_encode($aProductos);
-                file_put_contents("productos.json", $jsonProductos);
-                
-                
-
-                
-                
-                  
-                
+                file_put_contents("productos.json", $jsonProductos);  
             }
         }
     }
@@ -128,9 +122,6 @@ if (isset($_REQUEST["btnCobrar"])) {
     $jsonCompra = json_encode($aCompras);
     file_put_contents("compra.json", $jsonCompra);
 }
-
-
-
 
 ?>
 <!DOCTYPE html>
@@ -196,6 +187,12 @@ if (isset($_REQUEST["btnCobrar"])) {
                         <button type="submit" name="btnCompra" class="btn btn-primary">Agregar a la Compra</button>
                     </div>
                 </form>
+                <?php if(isset($productoNoExiste) && $productoNoExiste = true): ?>
+                    <div class="alert alert-danger" role="alert">
+                        A simple danger alert—check it out!
+                    </div>
+
+                <?php endif; ?>
             </div>
             <div class="col-6">
                 <div class="col-12">
@@ -290,7 +287,7 @@ if (isset($_REQUEST["btnCobrar"])) {
                         </thead>
                         <tbody>
                             <?php
-                            if ($aCompras != "") {
+                            if ($aCompras != array()) {
                                 foreach ($aCompras as $id => $compra) {
                             ?>
                                     <tr>
@@ -304,6 +301,9 @@ if (isset($_REQUEST["btnCobrar"])) {
                                     </tr>
                                 <?php  } ?>
                             <?php } ?>
+                            
+
+                            
                         </tbody>
                     </table>
                 </div>
