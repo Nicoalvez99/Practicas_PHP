@@ -6,6 +6,7 @@ error_reporting(E_ALL);
 if (file_exists("productos.json")) {
     $jsonProductos = file_get_contents("productos.json");
     $aProductos = json_decode($jsonProductos, true);
+    sort($aProductos);
 } else {
     $aProductos = array();
 }
@@ -38,10 +39,6 @@ if (isset($_GET["do"]) && $_GET["do"] == "eliminar") {
     file_put_contents("productos.json", $jsonProductos);
     header("Location: stock.php");
 }
-
-
-
-
 
 ?>
 <!DOCTYPE html>
@@ -152,7 +149,7 @@ if (isset($_GET["do"]) && $_GET["do"] == "eliminar") {
                             <td><?php echo $id ?></td>
                             <td><?php echo $producto["codigo"]; ?></td>
                             <td><?php echo $producto["nombre"]; ?></td>
-                            <td><?php echo $producto["stock"]; ?></td>
+                            <td style="<?php echo $producto["stock"] <= 10? "color: red;" : ""; ?>"><?php echo $producto["stock"] <= 10? "Stock crítico" . "(" . $producto["stock"] .  ")" : $producto["stock"]; ?></td>
                             <td><?php echo "$" . $producto["precio"]; ?></td>
                             <td><a href="?id=<?php echo $id ?>&do=editar" id="elegir">Elegir</a></td>
                             <td><a href="stock.php?id=<?php echo $id ?>&do=eliminar"><i class="bi bi-trash3"></i></a></td>
@@ -160,6 +157,9 @@ if (isset($_GET["do"]) && $_GET["do"] == "eliminar") {
                         </tr>
                     <?php } ?>
                 </tbody>
+                <?php if($aProductos = array()){
+                        echo "No hay Productos";
+                    } ?>
             </table>
         </div>
     </main>

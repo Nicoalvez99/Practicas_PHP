@@ -97,13 +97,27 @@ if (isset($_POST["btnVuelto"])) {
 
 if (isset($_REQUEST["btnCobrar"])) {
     foreach ($aProductos as $id => $producto) {
+        
         foreach ($aCompras as $compra) {
-            if ($producto["stock"] == $compra["stock"]) {
+            if ($producto["nombre"] == $compra["nombre"]) {
+                
+                
+                
+                unset($aProductos[$id]);
+                
+                $jsonProductos = json_encode($aProductos);
+                file_put_contents("productos.json", $jsonProductos);
+
                 $producto["stock"] = $producto["stock"] - $compra["cantidad"];
                 
-                print_r($producto);
-                array_replace($aProductos[$id], $producto);
-                print_r($aProductos[$id]);
+                
+                array_push($aProductos, $producto);
+                $jsonProductos = json_encode($aProductos);
+                file_put_contents("productos.json", $jsonProductos);
+                
+                
+
+                
                 
                   
                 
@@ -269,6 +283,7 @@ if (isset($_REQUEST["btnCobrar"])) {
                             <th>#</th>
                             <th>Código</th>
                             <th>Producto</th>
+                            <th>En Stock</th>
                             <th>Cantidad</th>
                             <th>Precio</th>
                             <th>Remover</th>
@@ -282,6 +297,7 @@ if (isset($_REQUEST["btnCobrar"])) {
                                         <td><?php echo $id; ?></td>
                                         <td><?php echo $compra["codigo"]; ?></td>
                                         <td><?php echo $compra["nombre"]; ?></td>
+                                        <td style="<?php echo $compra["stock"] <= 10? "color: red;" : ""; ?>"><?php echo $compra["stock"] <= 10? "Stock Crítico" : $compra["stock"] ?></td>
                                         <td><?php echo $compra["cantidad"]; ?></td>
                                         <td><?php echo "$" . $compra["precio"]; ?></td>
                                         <td><a href="index.php?id=<?php echo $id; ?>&do=eliminar"><i class="bi bi-trash3"></i></td>
