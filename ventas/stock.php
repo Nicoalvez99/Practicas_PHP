@@ -101,7 +101,7 @@ if (isset($_GET["do"]) && $_GET["do"] == "eliminar") {
                 <div class="collapse navbar-collapse" id="navbarNavDropdown">
                     <ul class="navbar-nav">
                         <li class="nav-item">
-                            <a class="nav-link active" style="color: #fff" aria-current="page" href="index.php"><i class="bi bi-house-door" style="font-size: 20px;"></i></a>
+                            <a class="nav-link active" style="color: #fff" aria-current="page" href="index.php"><i class="bi bi-shop-window" style="font-size: 20px;"></i></a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" style="color: #fff" href="stock.php">Mis Productos</a>
@@ -139,7 +139,8 @@ if (isset($_GET["do"]) && $_GET["do"] == "eliminar") {
                     <th>Producto</th>
                     <th>Cantidad</th>
                     <th>Precio</th>
-                    <th>Acciones</th>
+                    <th>Elegír</th>
+                    <th>Eliminar</th>
                 </thead>
                 <tbody>
                     <?php
@@ -150,7 +151,7 @@ if (isset($_GET["do"]) && $_GET["do"] == "eliminar") {
                             <td><?php echo $producto["codigo"]; ?></td>
                             <td><?php echo $producto["nombre"]; ?></td>
                             <td style="<?php echo $producto["stock"] <= 10? "color: red;" : ""; ?>"><?php echo $producto["stock"] <= 10? "Stock crítico" . "(" . $producto["stock"] .  ")" : $producto["stock"]; ?></td>
-                            <td><?php echo "$" . $producto["precio"]; ?></td>
+                            <td><?php echo "$" . number_format($producto["precio"], 2, ".", ","); ?></td>
                             <td><a href="?id=<?php echo $id ?>&do=editar" id="elegir">Elegir</a></td>
                             <td><a href="stock.php?id=<?php echo $id ?>&do=eliminar"><i class="bi bi-trash3"></i></a></td>
 

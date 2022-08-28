@@ -64,14 +64,9 @@ if ($_POST) {
                 $jsonNuevoProducto = file_get_contents("compra.json");
                 $aCompras = json_decode($jsonNuevoProducto, associative: true);
             } else {
-                $productoNoExiste = true;
+                //$productoNoExiste = true;
             }
-        
-        }
-       
-        
-    }
-    if (isset($_POST["btnCobrar"])) {
+        }   
     }
 }
 
@@ -122,7 +117,6 @@ if (isset($_REQUEST["btnCobrar"])) {
     $jsonCompra = json_encode($aCompras);
     file_put_contents("compra.json", $jsonCompra);
 }
-
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -148,15 +142,12 @@ if (isset($_REQUEST["btnCobrar"])) {
                 <div class="collapse navbar-collapse" id="navbarNavDropdown">
                     <ul class="navbar-nav">
                         <li class="nav-item">
-                            <a class="nav-link active" style="color: #fff" aria-current="page" href="index.php"><i class="bi bi-house-door" style="font-size: 20px;"></i></a>
+                            <a class="nav-link active" style="color: #fff" aria-current="page" href="index.php"><i class="bi bi-shop-window" style="font-size: 20px;"></i></a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" style="color: #fff" href="stock.php">Mis Productos</a>
                         </li>
-
-
                     </ul>
-
                 </div>
                 <li class="nav-item dropdown my-auto" style="list-style: none;">
                     <a class="nav-link dropdown-toggle" style="color: #fff" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -296,7 +287,7 @@ if (isset($_REQUEST["btnCobrar"])) {
                                         <td><?php echo $compra["nombre"]; ?></td>
                                         <td style="<?php echo $compra["stock"] <= 10? "color: red;" : ""; ?>"><?php echo $compra["stock"] <= 10? "Stock Crítico" : $compra["stock"] ?></td>
                                         <td><?php echo $compra["cantidad"]; ?></td>
-                                        <td><?php echo "$" . $compra["precio"]; ?></td>
+                                        <td><?php echo "$" . number_format($compra["precio"], 2, ".", ","); ?></td>
                                         <td><a href="index.php?id=<?php echo $id; ?>&do=eliminar"><i class="bi bi-trash3"></i></td>
                                     </tr>
                                 <?php  } ?>
