@@ -39,10 +39,12 @@ if ($_POST) {
     if (isset($_POST["btnCompra"])) {
         $nombreProducto = trim($_POST["txtProducto"]);
         $cantidadProducto = $_POST["numCantidad"] == "" ? $_POST["numCantidad"] = 1 : trim($_POST["numCantidad"]);
-        
+        $productoNoExiste = 0;
         foreach ($aProductos as $producto) {
+            
             if ($nombreProducto == $producto["nombre"]) {
-
+                $productoNoExiste = 1;
+                print_r($productoNoExiste);
                 $nombre = $producto["nombre"];
                 $codigo = $producto["codigo"];
                 $stock = $producto["stock"];
@@ -63,10 +65,10 @@ if ($_POST) {
         
                 $jsonNuevoProducto = file_get_contents("compra.json");
                 $aCompras = json_decode($jsonNuevoProducto, associative: true);
-            } else {
-                //$productoNoExiste = true;
-            }
-        }   
+            } 
+        }
+        print_r($productoNoExiste);
+        
     }
 }
 
@@ -178,12 +180,12 @@ if (isset($_REQUEST["btnCobrar"])) {
                         <button type="submit" name="btnCompra" class="btn btn-primary">Agregar a la Compra</button>
                     </div>
                 </form>
-                <?php if(isset($productoNoExiste) && $productoNoExiste = true): ?>
+                <?php if($productoNoExiste = 0){ ?>
                     <div class="alert alert-danger" role="alert">
-                        A simple danger alert—check it out!
+                        <?php echo "El producto no existe"; ?>
                     </div>
 
-                <?php endif; ?>
+                <?php } ?>
             </div>
             <div class="col-6">
                 <div class="col-12">
