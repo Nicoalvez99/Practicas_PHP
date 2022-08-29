@@ -3,12 +3,12 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-if (file_exists("productos.json")) { //si el archivo "datos.txt" existe
-    $jsonProductos = file_get_contents("productos.json"); // En la variable $jsonStr Almaceno lo que hay en datos.txt
-    $aProductos = json_decode($jsonProductos, associative: true); // Decodifico lo que hay en la variable $jsonStr y la asigno a $aDatos
+if (file_exists("productos.json")) {
+    $jsonProductos = file_get_contents("productos.json"); 
+    $aProductos = json_decode($jsonProductos, associative: true); 
 
 } else {
-    $aProductos = array();  //Si no existe arranco el array vacío.
+    $aProductos = array();
 }
 
 if (file_exists("compra.json")) {
@@ -18,6 +18,7 @@ if (file_exists("compra.json")) {
     $aCompras = array();
 }
 $id = isset($_GET["id"]) && $_GET["id"] >= 0 ? $_GET["id"] : "";
+
 if ($_POST) {
 
     if (isset($_POST["btnNuevoProducto"])) {
@@ -39,12 +40,10 @@ if ($_POST) {
     if (isset($_POST["btnCompra"])) {
         $nombreProducto = trim($_POST["txtProducto"]);
         $cantidadProducto = $_POST["numCantidad"] == "" ? $_POST["numCantidad"] = 1 : trim($_POST["numCantidad"]);
-        $productoNoExiste = 0;
+
         foreach ($aProductos as $producto) {
-            
+
             if ($nombreProducto == $producto["nombre"]) {
-                $productoNoExiste = 1;
-                print_r($productoNoExiste);
                 $nombre = $producto["nombre"];
                 $codigo = $producto["codigo"];
                 $stock = $producto["stock"];
@@ -57,18 +56,14 @@ if ($_POST) {
                     "stock" => $stock,
                     "precio" => $precio
                 );
-            
-            
-        
+
                 $jsonCompra = json_encode($aCompras);
                 file_put_contents("compra.json", $jsonCompra);
-        
+
                 $jsonNuevoProducto = file_get_contents("compra.json");
                 $aCompras = json_decode($jsonNuevoProducto, associative: true);
-            } 
+            }
         }
-        print_r($productoNoExiste);
-        
     }
 }
 
@@ -102,7 +97,7 @@ if (isset($_POST["btnVuelto"])) {
 
 if (isset($_REQUEST["btnCobrar"])) {
     foreach ($aProductos as $id => $producto) {
-        
+
         foreach ($aCompras as $compra) {
             if ($producto["nombre"] == $compra["nombre"]) {
                 unset($aProductos[$id]);
@@ -111,7 +106,7 @@ if (isset($_REQUEST["btnCobrar"])) {
                 $producto["stock"] = $producto["stock"] - $compra["cantidad"];
                 array_push($aProductos, $producto);
                 $jsonProductos = json_encode($aProductos);
-                file_put_contents("productos.json", $jsonProductos);  
+                file_put_contents("productos.json", $jsonProductos);
             }
         }
     }
@@ -153,11 +148,11 @@ if (isset($_REQUEST["btnCobrar"])) {
                 </div>
                 <li class="nav-item dropdown my-auto" style="list-style: none;">
                     <a class="nav-link dropdown-toggle" style="color: #fff" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    <i class="bi bi-person" style="font-size: 20px;"></i>
+                        <i class="bi bi-person" style="font-size: 20px;"></i>
                         Mi Cuenta
                     </a>
                     <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="#">Editar</a></li>
+                        <li><a class="dropdown-item" href="#">Editar</a></li>
                         <li><a class="dropdown-item" href="login.php">Cerrar sesion</a></li>
                     </ul>
                 </li>
@@ -180,12 +175,6 @@ if (isset($_REQUEST["btnCobrar"])) {
                         <button type="submit" name="btnCompra" class="btn btn-primary">Agregar a la Compra</button>
                     </div>
                 </form>
-                <?php if($productoNoExiste = 0){ ?>
-                    <div class="alert alert-danger" role="alert">
-                        <?php echo "El producto no existe"; ?>
-                    </div>
-
-                <?php } ?>
             </div>
             <div class="col-6">
                 <div class="col-12">
@@ -232,10 +221,10 @@ if (isset($_REQUEST["btnCobrar"])) {
                         <h3 style="color: green;">Total: <?php echo "$" . number_format(sumarTotal($aCompras), 2, ".", ","); ?> </h3>
                         <h5>Su vuelto es: $<?php echo isset($vuelto) ? number_format($vuelto, 2, ".", ",") : ""; ?> </h5>
                         <form action="" method="post">
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-                            Vuelto
-                        </button>
-                        
+                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                                Vuelto
+                            </button>
+
                             <button type="submit" name="btnCobrar" class="btn btn-success">Cobrar</button>
                         </form>
                         <!-- Modal -->
@@ -255,10 +244,6 @@ if (isset($_REQUEST["btnCobrar"])) {
                                             </div>
                                             <button type="submit" name="btnVuelto" data-bs-toggle="modal" data-bs-target="#staticBackdrop" class="btn btn-primary my-2">Vuelto</button>
                                         </form>
-                                        
-                                    </div>
-                                    <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                                     </div>
                                 </div>
                             </div>
@@ -287,16 +272,16 @@ if (isset($_REQUEST["btnCobrar"])) {
                                         <td><?php echo $id; ?></td>
                                         <td><?php echo $compra["codigo"]; ?></td>
                                         <td><?php echo $compra["nombre"]; ?></td>
-                                        <td style="<?php echo $compra["stock"] <= 10? "color: red;" : ""; ?>"><?php echo $compra["stock"] <= 10? "Stock Crítico" : $compra["stock"] ?></td>
+                                        <td style="<?php echo $compra["stock"] <= 10 ? "color: red;" : ""; ?>"><?php echo $compra["stock"] <= 10 ? "Stock Crítico" : $compra["stock"] ?></td>
                                         <td><?php echo $compra["cantidad"]; ?></td>
                                         <td><?php echo "$" . number_format($compra["precio"], 2, ".", ","); ?></td>
                                         <td><a href="index.php?id=<?php echo $id; ?>&do=eliminar"><i class="bi bi-trash3"></i></td>
                                     </tr>
                                 <?php  } ?>
                             <?php } ?>
-                            
 
-                            
+
+
                         </tbody>
                     </table>
                 </div>
