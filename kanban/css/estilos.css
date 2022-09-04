@@ -1,0 +1,20 @@
+#body {
+    background-color: #20202c;
+}
+.largo {
+    height: 100vh;
+    margin: 0;
+    background-color: #2b2b37;
+}
+.cuerpo {
+    background-color: #20202c;
+
+}
+.tarea {
+    background-color: #2b2b37;
+    border-radius: 10px;
+}
+.luz {
+    background-color: #fff;
+    color:#20202c;
+}
