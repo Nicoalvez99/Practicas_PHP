@@ -3,39 +3,48 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-if(file_exists("data.json")){
+if (file_exists("data.json")) {
     $jsonData = file_get_contents("data.json");
     $aProyectos = json_decode($jsonData, associative: true);
 } else {
     $aProyectos = array();
-    
 }
 
-if(isset($_POST["btnProyecto"])){
+$id = isset($_GET["id"]) && $_GET["id"] >= 0 ? $_GET["id"] : "";
+
+if (isset($_POST["btnProyecto"])) {
     $nombreProyecto = $_POST["txtNombreProyecto"];
-    
+
     $aProyectos[$nombreProyecto] = array();
 
     $jsonData = json_encode($aProyectos);
     file_put_contents("data.json", $jsonData);
 }
-if(isset($_POST["btnTarea"])){
+if (isset($_POST["btnTarea"])) {
     $nombreTarea = $_POST["txtTitulo"];
     $descripcion = $_POST["txtDescripcion"];
     $subTareaUno = $_POST["txtSubTareaUno"];
     $subTareaDos = $_POST["txtSubTareaDos"];
-    $optSelect = $_POST["optSelect"];
+    $seleccion = $_POST["optSelect"];
 
-    $aTareas[] = array("titulo" => $nombreTarea,
-                        "descripcion" => $descripcion,
-                        "subTareaUno" => $subTareaUno,
-                        "subTareaDos" => $subTareaDos,
-                        "seleccion" => $optSelect
+
+
+    $aProyectos[$id] = array(
+        "nombre" => $nombreTarea,
+        "descripcion" => $descripcion,
+        "tareaUno" => $subTareaUno,
+        "tareaDos" => $subTareaDos,
+        "estado" => $seleccion
     );
-    $aProyectos = array($aTareas);
-    print_r($aProyectos);
-    
+
+    $jsonData = json_encode($aProyectos);
+    file_put_contents("data.json", $jsonData);
 }
+
+
+
+
+
 
 
 
@@ -68,20 +77,20 @@ if(isset($_POST["btnTarea"])){
                         <span class="fs-4">Kanban</span>
                     </a>
                     <hr>
-                    <p style="color: #bbb; font-size: 15px;">Todas los proyectos (<?php echo count($aProyectos); ?>)</p>
+                    <p style="color: #bbb; font-size: 15px;">Todos los proyectos (<?php echo count($aProyectos); ?>)</p>
                     <ul class="nav nav-pills flex-column mb-auto">
-                        <?php if($aProyectos != ""){ 
-                                foreach($aProyectos as $id => $proyecto){ ?>
-                        <li class="nav-item my-2">
-                            <a href="index.php?id=<?php echo $id; ?>" class="nav-link active" aria-current="page">
-                                <svg class="bi pe-none me-2" width="16" height="16">
-                                    <use xlink:href="#home" />
-                                </svg>
-                                <?php  echo $proyecto; ?>
-                            </a>
-                        </li>
+                        <?php if ($aProyectos != "") {
+                            foreach ($aProyectos as $id => $proyecto) { ?>
+                                <li class="nav-item my-2">
+                                    <a href="index.php?id=<?php echo $id; ?>" class="nav-link active" aria-current="page">
+                                        <svg class="bi pe-none me-2" width="16" height="16">
+                                            <use xlink:href="#home" />
+                                        </svg>
+                                        <?php echo $id; ?>
+                                    </a>
+                                </li>
                             <?php } ?>
-                        <?php }?>
+                        <?php } ?>
 
                         <a href="#" class="btn my-5" style="color: #ccc;" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
                             + Agregar Proyecto
@@ -105,9 +114,9 @@ if(isset($_POST["btnTarea"])){
                                             <button type="submit" name="btnProyecto" class="btn btn-primary">Agregar</button>
                                         </form>
                                     </div>
-                                    
-                                        
-                                    
+
+
+
                                 </div>
                             </div>
                         </div>
@@ -178,15 +187,31 @@ if(isset($_POST["btnTarea"])){
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-4">
-                        <p style="color: #bbb">Por hacer (0)</p>
-                    </div>
-                    <div class="col-4">
-                        <p style="color: #bbb;">Haciendo (0)</p>
-                    </div>
-                    <div class="col-4">
-                        <p style="color: #bbb;">Terminado (0)</p>
-                    </div>
+                    <?php if (isset($id) && $id != "") { ?>
+                        <div class="col-4">
+                            <p style="color: #bbb">Por hacer (0)</p>
+                        </div>
+                        <div class="col-4">
+                            <p style="color: #bbb;">Haciendo (0)</p>
+                            <?php foreach($aProyectos as $proyecto){ ?>
+                            <div class="card" style="width: 18rem;">
+                                <div class="card-body">
+                                    <h5 class="card-title"><?php echo $proyecto["nombre"]; ?></h5>
+                                    <h6 class="card-subtitle mb-2 text-muted"><?php echo $proyecto["estado"]; ?></h6>
+                                    <p class="card-text"><?php echo $proyecto["descripcion"]; ?></p>
+                                    <a href="#" class="card-link">Ediar</a>
+                                    <a href="#" class="card-link">Eliminar tarea</a>
+                                </div>
+                            </div>
+                            <?php } ?>
+                        </div>
+                        <div class="col-4">
+                            <p style="color: #bbb;">Terminado (0)</p>
+                        </div>
+                    <?php } ?>
+                    <?php if($id == ""){ ?>
+                        <p>No hay tareas disposibles, cree un proyecto o seleccione uno.</p>
+                    <?php } ?>
                 </div>
             </div>
         </div>
