@@ -26,12 +26,14 @@ if(isset($_POST["btnTarea"])){
     $subTareaDos = $_POST["txtSubTareaDos"];
     $optSelect = $_POST["optSelect"];
 
-    $aProyectos[] = array("titulo" => $nombreTarea,
+    $aTareas[] = array("titulo" => $nombreTarea,
                         "descripcion" => $descripcion,
                         "subTareaUno" => $subTareaUno,
                         "subTareaDos" => $subTareaDos,
                         "seleccion" => $optSelect
     );
+    $aProyectos = array($aTareas);
+    print_r($aProyectos);
     
 }
 
@@ -68,16 +70,18 @@ if(isset($_POST["btnTarea"])){
                     <hr>
                     <p style="color: #bbb; font-size: 15px;">Todas los proyectos (<?php echo count($aProyectos); ?>)</p>
                     <ul class="nav nav-pills flex-column mb-auto">
-                        <?php if($aProyectos != ""){ foreach($aProyectos as $proyecto){ ?>
+                        <?php if($aProyectos != ""){ 
+                                foreach($aProyectos as $id => $proyecto){ ?>
                         <li class="nav-item my-2">
-                            <a href="#" class="nav-link active" aria-current="page">
+                            <a href="index.php?id=<?php echo $id; ?>" class="nav-link active" aria-current="page">
                                 <svg class="bi pe-none me-2" width="16" height="16">
                                     <use xlink:href="#home" />
                                 </svg>
-                                <?php // echo $proyecto["nombre"]; ?>
+                                <?php  echo $proyecto; ?>
                             </a>
                         </li>
-                        <?php } }?>
+                            <?php } ?>
+                        <?php }?>
 
                         <a href="#" class="btn my-5" style="color: #ccc;" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
                             + Agregar Proyecto
