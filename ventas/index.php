@@ -4,9 +4,8 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 if (file_exists("productos.json")) {
-    $jsonProductos = file_get_contents("productos.json"); 
-    $aProductos = json_decode($jsonProductos, associative: true); 
-
+    $jsonProductos = file_get_contents("productos.json");
+    $aProductos = json_decode($jsonProductos, associative: true);
 } else {
     $aProductos = array();
 }
@@ -41,6 +40,7 @@ if ($_POST) {
         $nombreProducto = trim($_POST["txtProducto"]);
         $cantidadProducto = $_POST["numCantidad"] == "" ? $_POST["numCantidad"] = 1 : trim($_POST["numCantidad"]);
 
+        $productoNoExiste = 0;
         foreach ($aProductos as $producto) {
 
             if ($nombreProducto == $producto["nombre"]) {
@@ -56,12 +56,14 @@ if ($_POST) {
                     "stock" => $stock,
                     "precio" => $precio
                 );
-
+                $productoNoExiste = $productoNoExiste - 1;
                 $jsonCompra = json_encode($aCompras);
                 file_put_contents("compra.json", $jsonCompra);
 
                 $jsonNuevoProducto = file_get_contents("compra.json");
                 $aCompras = json_decode($jsonNuevoProducto, associative: true);
+            } else {
+                $productoNoExiste = $productoNoExiste + 1;
             }
         }
     }
@@ -94,6 +96,7 @@ if (isset($_POST["btnVuelto"])) {
 } else {
     $vuelto = 0;
 }
+$totalProductos = count($aProductos);
 
 if (isset($_REQUEST["btnCobrar"])) {
     foreach ($aProductos as $id => $producto) {
@@ -132,7 +135,7 @@ if (isset($_REQUEST["btnCobrar"])) {
     <header class="container-fluid mb-3">
         <nav class="navbar navbar-expand-lg bg-primary">
             <div class="container-fluid">
-                <a class="navbar-brand" style="color: #fff" href="index.php">Plataforma de Ventas</a>
+                <a class="navbar-brand" style="color: #fff" href="index.php">Plataforma Ventus</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
@@ -142,7 +145,7 @@ if (isset($_REQUEST["btnCobrar"])) {
                             <a class="nav-link active" style="color: #fff" aria-current="page" href="index.php"><i class="bi bi-shop-window" style="font-size: 20px;"></i></a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" style="color: #fff" href="stock.php">Mis Productos</a>
+                            <a class="nav-link" style="color: #fff" href="stock.php">Mis Productos <span class="badge text-bg-info"><?php echo $totalProductos; ?></span></a>
                         </li>
                     </ul>
                 </div>
@@ -175,6 +178,11 @@ if (isset($_REQUEST["btnCobrar"])) {
                         <button type="submit" name="btnCompra" class="btn btn-primary">Agregar a la Compra</button>
                     </div>
                 </form>
+                <?php if (isset($productoNoExiste) && $productoNoExiste == $totalProductos) { ?>
+                    <div class="alert alert-danger" role="alert">
+                        Este producto no existe en el stock.
+                    </div>
+                <?php } ?>
             </div>
             <div class="col-6">
                 <div class="col-12">

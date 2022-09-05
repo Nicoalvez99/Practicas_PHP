@@ -94,7 +94,7 @@ if (isset($_GET["do"]) && $_GET["do"] == "eliminar") {
     <header class="container-fluid mb-3">
     <nav class="navbar navbar-expand-lg bg-primary">
             <div class="container-fluid">
-                <a class="navbar-brand" style="color: #fff" href="index.php">Plataforma de Ventas</a>
+                <a class="navbar-brand" style="color: #fff" href="index.php">Plataforma Ventus</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
