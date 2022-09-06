@@ -248,7 +248,7 @@ if (isset($_REQUEST["btnCobrar"])) {
                                         <form action="" method="post">
                                             <div class="col-12">
                                                 <label for="numVuelto">¿Con cuánto paga?</label>
-                                                <input type="number" name="numVuelto" class="form-control">
+                                                <input type="number" name="numVuelto" class="form-control" required>
                                             </div>
                                             <button type="submit" name="btnVuelto" data-bs-toggle="modal" data-bs-target="#staticBackdrop" class="btn btn-primary my-2">Vuelto</button>
                                         </form>

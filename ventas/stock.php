@@ -7,6 +7,7 @@ if (file_exists("productos.json")) {
     $jsonProductos = file_get_contents("productos.json");
     $aProductos = json_decode($jsonProductos, true);
     sort($aProductos);
+    $totalProductos = count($aProductos);
 } else {
     $aProductos = array();
 }
@@ -39,6 +40,7 @@ if (isset($_GET["do"]) && $_GET["do"] == "eliminar") {
     file_put_contents("productos.json", $jsonProductos);
     header("Location: stock.php");
 }
+
 
 ?>
 <!DOCTYPE html>
@@ -127,7 +129,7 @@ if (isset($_GET["do"]) && $_GET["do"] == "eliminar") {
     <main class="container">
         <div class="row">
             <div class="col-12 my-3">
-                <h1>Stock de Productos</h1>
+                <h1>Stock de Productos (<?php echo isset($totalProductos) ? $totalProductos : "0"; ?>)</h1>
             </div>
             <button data-bs-toggle="modal" <?php echo isset($id) && $id == "" ? "disabled" : ""; ?> data-bs-target="#exampleModal" class="btn btn-secondary" id="editar">Editar</button>
         </div>
