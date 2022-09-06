@@ -188,17 +188,19 @@ if (isset($_POST["btnTarea"])) {
                 </div>
                 <div class="row">
                     <?php if (isset($id) && $id != "") { ?>
+                        <?php foreach($aProyectos[$id] as $tareas){ ?>
                         <div class="col-4">
                             <p style="color: #bbb">Por hacer (0)</p>
+                            <?php print_r($aProductos[$id]); ?>
                         </div>
                         <div class="col-4">
                             <p style="color: #bbb;">Haciendo (0)</p>
-                            <?php foreach($aProyectos as $proyecto){ ?>
+                           <?php if($tareas["estado"] = "Haciendo"){ ?>
                             <div class="card" style="width: 18rem;">
                                 <div class="card-body">
-                                    <h5 class="card-title"><?php echo $proyecto["nombre"]; ?></h5>
-                                    <h6 class="card-subtitle mb-2 text-muted"><?php echo $proyecto["estado"]; ?></h6>
-                                    <p class="card-text"><?php echo $proyecto["descripcion"]; ?></p>
+                                    <h5 class="card-title"><?php echo $tareas["nombre"]; ?></h5>
+                                    <h6 class="card-subtitle mb-2 text-muted"><?php echo $tareas["estado"]; ?></h6>
+                                    <p class="card-text"><?php echo $tareas["descripcion"]; ?></p>
                                     <a href="#" class="card-link">Ediar</a>
                                     <a href="#" class="card-link">Eliminar tarea</a>
                                 </div>
@@ -208,6 +210,7 @@ if (isset($_POST["btnTarea"])) {
                         <div class="col-4">
                             <p style="color: #bbb;">Terminado (0)</p>
                         </div>
+                        <?php } ?>
                     <?php } ?>
                     <?php if($id == ""){ ?>
                         <p>No hay tareas disposibles, cree un proyecto o seleccione uno.</p>
