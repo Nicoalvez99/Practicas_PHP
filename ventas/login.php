@@ -9,6 +9,7 @@ if ($_POST) {
     $contraseña = $_POST["txtContraseña"];
 
     if ($nombre == "Nicolas" && $contraseña == "admin123") {
+        session_start();
         header("Location: index.php");
     } else {
         $error = "";

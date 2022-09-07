@@ -3,6 +3,7 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
+
 if (file_exists("productos.json")) {
     $jsonProductos = file_get_contents("productos.json");
     $aProductos = json_decode($jsonProductos, associative: true);
@@ -47,6 +48,7 @@ if ($_POST) {
                 $nombre = $producto["nombre"];
                 $codigo = $producto["codigo"];
                 $stock = $producto["stock"];
+                $precioUnitario = $producto["precio"];
                 $precio = $producto["precio"] * $cantidadProducto;
 
                 $aCompras[] = array(
@@ -54,6 +56,7 @@ if ($_POST) {
                     "codigo" => $codigo,
                     "cantidad" => $cantidadProducto,
                     "stock" => $stock,
+                    "preciounitario" => $precioUnitario,
                     "precio" => $precio
                 );
                 $productoNoExiste = $productoNoExiste - 1;
@@ -263,12 +266,12 @@ if (isset($_REQUEST["btnCobrar"])) {
                 <div class="col-12">
                     <table class="table table-hover">
                         <thead>
-                            <th>#</th>
                             <th>Código</th>
                             <th>Producto</th>
                             <th>En Stock</th>
                             <th>Cantidad</th>
-                            <th>Precio</th>
+                            <th>Precio unitario</th>
+                            <th>Precio total</th>
                             <th>Remover</th>
                         </thead>
                         <tbody>
@@ -276,22 +279,24 @@ if (isset($_REQUEST["btnCobrar"])) {
                             if ($aCompras != array()) {
                                 foreach ($aCompras as $id => $compra) {
                             ?>
-                                    <tr>
-                                        <td><?php echo $id; ?></td>
+                                    <tr>                                       
                                         <td><?php echo $compra["codigo"]; ?></td>
                                         <td><?php echo $compra["nombre"]; ?></td>
                                         <td style="<?php echo $compra["stock"] <= 10 ? "color: red;" : ""; ?>"><?php echo $compra["stock"] <= 10 ? "Stock Crítico" : $compra["stock"] ?></td>
                                         <td><?php echo $compra["cantidad"]; ?></td>
+                                        <td><?php echo "$" . number_format($compra["preciounitario"], 2, ".", ","); ?></td>
                                         <td><?php echo "$" . number_format($compra["precio"], 2, ".", ","); ?></td>
                                         <td><a href="index.php?id=<?php echo $id; ?>&do=eliminar"><i class="bi bi-trash3"></i></td>
                                     </tr>
                                 <?php  } ?>
                             <?php } ?>
-
-
-
                         </tbody>
                     </table>
+                    <?php if($aCompras == array()){ ?>
+                        <div class="alert alert-info text-center" role="alert">
+                            Aún no hay productos en compra.
+                        </div>
+                    <?php } ?>
                 </div>
             </div>
     </main>
