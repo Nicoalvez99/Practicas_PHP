@@ -3,6 +3,9 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
+if(!isset($_SESSION["nombre"])){
+  //  header("Location: login.php");
+}
 
 if (file_exists("productos.json")) {
     $jsonProductos = file_get_contents("productos.json");
@@ -44,7 +47,7 @@ if ($_POST) {
         $productoNoExiste = 0;
         foreach ($aProductos as $producto) {
 
-            if ($nombreProducto == $producto["nombre"]) {
+            if ($nombreProducto == $producto["nombre"] || $nombreProducto == $producto["codigo"]) {
                 $nombre = $producto["nombre"];
                 $codigo = $producto["codigo"];
                 $stock = $producto["stock"];
@@ -170,7 +173,7 @@ if (isset($_REQUEST["btnCobrar"])) {
             <div class="col-6">
                 <form action="" method="post">
                     <div class="col-8">
-                        <label for="txtProducto">Nombre del Producto</label>
+                        <label for="txtProducto">Nombre o código del Producto</label>
                         <input type="text" name="txtProducto" class="form-control">
                     </div>
                     <div class="col-8">

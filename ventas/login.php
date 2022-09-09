@@ -8,8 +8,8 @@ if ($_POST) {
     $nombre = $_POST["txtNombre"];
     $contraseña = $_POST["txtContraseña"];
 
-    if ($nombre == "Nicolas" && $contraseña == "admin123") {
-        session_start();
+    if ($nombre == "Nicolas" && $contraseña == "admin123") { 
+       // $_SESSION["nombre"] = "Nicolas";
         header("Location: index.php");
     } else {
         $error = "";
