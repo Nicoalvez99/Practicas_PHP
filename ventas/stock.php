@@ -149,21 +149,23 @@ if (isset($_GET["do"]) && $_GET["do"] == "eliminar") {
                     foreach ($aProductos as $id => $producto) {
                     ?>
                         <tr>
-                            <td><?php echo $id ?></td>
+                            <td><?php echo $id + 1 ?></td>
                             <td><?php echo $producto["codigo"]; ?></td>
                             <td><?php echo $producto["nombre"]; ?></td>
                             <td style="<?php echo $producto["stock"] <= 10? "color: red;" : ""; ?>"><?php echo $producto["stock"] <= 10? "Stock crítico" . "(" . $producto["stock"] .  ")" : $producto["stock"]; ?></td>
                             <td><?php echo "$" . number_format($producto["precio"], 2, ".", ","); ?></td>
-                            <td><a href="?id=<?php echo $id ?>&do=editar" id="elegir">Elegir</a></td>
+                            <td><a href="?id=<?php echo $id ?>&do=editar" id="elegir"><i class="bi bi-pencil-square"></i></a></td>
                             <td><a href="stock.php?id=<?php echo $id ?>&do=eliminar"><i class="bi bi-trash3"></i></a></td>
 
                         </tr>
                     <?php } ?>
                 </tbody>
-                <?php if($aProductos = array()){
-                        echo "No hay Productos";
-                    } ?>
             </table>
+            <?php if($aProductos == array()){ ?>
+                    <div class="alert alert-primary text-center" role="alert">
+                        Aún no hay productos en stock.
+                    </div>
+            <?php } ?>
         </div>
     </main>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
