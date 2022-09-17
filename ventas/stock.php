@@ -94,9 +94,9 @@ if (isset($_GET["do"]) && $_GET["do"] == "eliminar") {
         </div>
     </div>
     <header class="container-fluid mb-3">
-    <nav class="navbar navbar-expand-lg bg-primary">
+        <nav class="navbar navbar-expand-lg bg-primary">
             <div class="container-fluid">
-                <a class="navbar-brand" style="color: #fff" href="index.php">Plataforma Ventus</a>
+                <a class="navbar-brand" style="color: #fff" href="index.php">Plataforma Ventas</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
@@ -115,11 +115,11 @@ if (isset($_GET["do"]) && $_GET["do"] == "eliminar") {
                 </div>
                 <li class="nav-item dropdown my-auto" style="list-style: none;">
                     <a class="nav-link dropdown-toggle" style="color: #fff" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    <i class="bi bi-person" style="font-size: 20px;"></i>
+                        <i class="bi bi-person" style="font-size: 20px;"></i>
                         Mi Cuenta
                     </a>
                     <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="#">Editar</a></li>
+                        <li><a class="dropdown-item" href="#">Editar</a></li>
                         <li><a class="dropdown-item" href="login.php">Cerrar sesion</a></li>
                     </ul>
                 </li>
@@ -131,10 +131,17 @@ if (isset($_GET["do"]) && $_GET["do"] == "eliminar") {
             <div class="col-12 my-3">
                 <h1>Stock de Productos (<?php echo isset($totalProductos) ? $totalProductos : "0"; ?>)</h1>
             </div>
-            <button data-bs-toggle="modal" <?php echo isset($id) && $id == "" ? "disabled" : ""; ?> data-bs-target="#exampleModal" class="btn btn-secondary" id="editar">Editar</button>
+            <button data-bs-toggle="modal" <?php echo isset($id) && $id == "" ? "disabled" : ""; ?> data-bs-target="#exampleModal" class="btn btn-primary" id="editar">Editar</button>
         </div>
         <div class="row">
-            <table class="table table-hover border">
+            <form action="">
+                <div class="col-12">
+                    <input type="text" class="form-control m-2 light-table-filter" data-table="table_id" placeholder="Buscador de productos. (por codigo, nombre, cantidad o precio)">
+                </div>
+            </form>
+        </div>
+        <div class="row">
+            <table class="table table-hover border table_id">
                 <thead>
                     <th>#</th>
                     <th>Código</th>
@@ -152,7 +159,7 @@ if (isset($_GET["do"]) && $_GET["do"] == "eliminar") {
                             <td><?php echo $id + 1 ?></td>
                             <td><?php echo $producto["codigo"]; ?></td>
                             <td><?php echo $producto["nombre"]; ?></td>
-                            <td style="<?php echo $producto["stock"] <= 10? "color: red;" : ""; ?>"><?php echo $producto["stock"] <= 10? "Stock crítico" . "(" . $producto["stock"] .  ")" : $producto["stock"]; ?></td>
+                            <td style="<?php echo $producto["stock"] <= 10 ? "color: red;" : ""; ?>"><?php echo $producto["stock"] <= 10 ? "Stock crítico" . "(" . $producto["stock"] .  ")" : $producto["stock"]; ?></td>
                             <td><?php echo "$" . number_format($producto["precio"], 2, ".", ","); ?></td>
                             <td><a href="?id=<?php echo $id ?>&do=editar" id="elegir"><i class="bi bi-pencil-square"></i></a></td>
                             <td><a href="stock.php?id=<?php echo $id ?>&do=eliminar"><i class="bi bi-trash3"></i></a></td>
@@ -161,15 +168,15 @@ if (isset($_GET["do"]) && $_GET["do"] == "eliminar") {
                     <?php } ?>
                 </tbody>
             </table>
-            <?php if($aProductos == array()){ ?>
-                    <div class="alert alert-primary text-center" role="alert">
-                        Aún no hay productos en stock.
-                    </div>
+            <?php if ($aProductos == array()) { ?>
+                <div class="alert alert-primary text-center" role="alert">
+                    Aún no hay productos en stock.
+                </div>
             <?php } ?>
         </div>
     </main>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
-    <script src="main.js"></script>
+    <script src="js/main.js"></script>
 </body>
 
 </html>
