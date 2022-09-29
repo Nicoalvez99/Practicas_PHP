@@ -1,48 +1,8 @@
 <?php
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-
-if (file_exists("data.json")) {
-    $jsonData = file_get_contents("data.json");
-    $aProyectos = json_decode($jsonData, associative: true);
-} else {
-    $aProyectos = array();
-}
-
-$id = isset($_GET["id"]) && $_GET["id"] >= 0 ? $_GET["id"] : "";
-
-if (isset($_POST["btnProyecto"])) {
-    $nombreProyecto = $_POST["txtNombreProyecto"];
-
-    $aProyectos[$nombreProyecto] = array();
-
-    $jsonData = json_encode($aProyectos);
-    file_put_contents("data.json", $jsonData);
-}
-if (isset($_POST["btnTarea"])) {
-    $nombreTarea = $_POST["txtTitulo"];
-    $descripcion = $_POST["txtDescripcion"];
-    $subTareaUno = $_POST["txtSubTareaUno"];
-    $subTareaDos = $_POST["txtSubTareaDos"];
-    $seleccion = $_POST["optSelect"];
-
-
-
-    $aProyectos[$id] = array(
-        "nombre" => $nombreTarea,
-        "descripcion" => $descripcion,
-        "tareaUno" => $subTareaUno,
-        "tareaDos" => $subTareaDos,
-        "estado" => $seleccion
-    );
-
-    $jsonData = json_encode($aProyectos);
-    file_put_contents("data.json", $jsonData);
-}
-
-
-
+include_once "config.php";
+include_once "entidades/proyecto.php";
+include_once "entidades/tarea.php";
+include_once "entidades/usuario.php";
 
 
 
@@ -77,9 +37,9 @@ if (isset($_POST["btnTarea"])) {
                         <span class="fs-4">Kanban</span>
                     </a>
                     <hr>
-                    <p style="color: #bbb; font-size: 15px;">Todos los proyectos (<?php echo count($aProyectos); ?>)</p>
+                    <p style="color: #bbb; font-size: 15px;">Todos los proyectos (<?php //echo count($aProyectos); ?>)</p>
                     <ul class="nav nav-pills flex-column mb-auto">
-                        <?php if ($aProyectos != "") {
+                        <?php /*if ($aProyectos != "") {
                             foreach ($aProyectos as $id => $proyecto) { ?>
                                 <li class="nav-item my-2">
                                     <a href="index.php?id=<?php echo $id; ?>" class="nav-link active" aria-current="page">
@@ -90,7 +50,7 @@ if (isset($_POST["btnTarea"])) {
                                     </a>
                                 </li>
                             <?php } ?>
-                        <?php } ?>
+                        <?php }*/ ?>
 
                         <a href="#" class="btn my-5" style="color: #ccc;" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
                             + Agregar Proyecto
@@ -187,34 +147,34 @@ if (isset($_POST["btnTarea"])) {
                     </div>
                 </div>
                 <div class="row">
-                    <?php if (isset($id) && $id != "") { ?>
-                        <?php foreach($aProyectos[$id] as $tareas){ ?>
+                    <?php //if (isset($id) && $id != "") { ?>
+                        <?php //foreach($aProyectos[$id] as $tareas){ ?>
                         <div class="col-4">
                             <p style="color: #bbb">Por hacer (0)</p>
-                            <?php print_r($aProductos[$id]); ?>
+                            <?php // print_r($aProductos[$id]); ?>
                         </div>
                         <div class="col-4">
                             <p style="color: #bbb;">Haciendo (0)</p>
-                           <?php if($tareas["estado"] = "Haciendo"){ ?>
+                           <?php // if($tareas["estado"] = "Haciendo"){ ?>
                             <div class="card" style="width: 18rem;">
                                 <div class="card-body">
-                                    <h5 class="card-title"><?php echo $tareas["nombre"]; ?></h5>
-                                    <h6 class="card-subtitle mb-2 text-muted"><?php echo $tareas["estado"]; ?></h6>
-                                    <p class="card-text"><?php echo $tareas["descripcion"]; ?></p>
+                                    <h5 class="card-title"><?php //echo $tareas["nombre"]; ?></h5>
+                                    <h6 class="card-subtitle mb-2 text-muted"><?php //echo $tareas["estado"]; ?></h6>
+                                    <p class="card-text"><?php //echo $tareas["descripcion"]; ?></p>
                                     <a href="#" class="card-link">Ediar</a>
                                     <a href="#" class="card-link">Eliminar tarea</a>
                                 </div>
                             </div>
-                            <?php } ?>
+                            <?php // } ?>
                         </div>
                         <div class="col-4">
                             <p style="color: #bbb;">Terminado (0)</p>
                         </div>
-                        <?php } ?>
-                    <?php } ?>
-                    <?php if($id == ""){ ?>
+                        <?php //} ?>
+                    <?php //} ?>
+                    <?php //if($id == ""){ ?>
                         <p>No hay tareas disposibles, cree un proyecto o seleccione uno.</p>
-                    <?php } ?>
+                    <?php //} ?>
                 </div>
             </div>
         </div>
