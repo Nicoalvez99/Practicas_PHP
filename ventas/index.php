@@ -3,8 +3,8 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-if(!isset($_SESSION["nombre"])){
-  //  header("Location: login.php");
+if (!isset($_SESSION["nombre"])) {
+    //  header("Location: login.php");
 }
 
 if (file_exists("productos.json")) {
@@ -96,9 +96,23 @@ function sumarTotal($aCompras)
     }
 }
 
+if(isset($_POST["btnDescuento"])){
+    $valorDesc = $_POST["txtDescuento"];
+
+    $valorAnterior = sumarTotal($aCompras) * $valorDesc / 100;
+    $valorActual = sumarTotal($aCompras) - $valorAnterior;
+    
+} else{
+    $valorActual = 0;
+}
+
+
 if (isset($_POST["btnVuelto"])) {
     $pago = trim($_POST["numVuelto"]);
+    
     $vuelto = $pago - sumarTotal($aCompras);
+    print_r($valorActual);
+    exit;
 } else {
     $vuelto = 0;
 }
@@ -232,9 +246,32 @@ if (isset($_REQUEST["btnCobrar"])) {
                         </div>
                     </div>
                     <div class="col-12 py-3">
-                        <h3 style="color: green;">Total: <?php echo "$" . number_format(sumarTotal($aCompras), 2, ".", ","); ?> </h3>
+                        <h3 style="color: green;">Total: <?php echo "$" . number_format(isset($_POST["btnDescuento"]) ? $valorActual : sumarTotal($aCompras), 2, ".", ","); ?> </h3>
                         <h5>Su vuelto es: $<?php echo isset($vuelto) ? number_format($vuelto, 2, ".", ",") : ""; ?> </h5>
+                        
+                        <div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h1 class="modal-title fs-5" id="exampleModalLabel">Descuento</h1>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form action="" method="post">
+                                            <div class="mb-3">
+                                                <label for="recipient-name" class="col-form-label">Descuento en %:</label>
+                                                <input type="number" class="form-control" id="recipient-name" name="txtDescuento">
+                                            </div>
+                                            <button type="submit" class="btn btn-danger" name="btnDescuento">Aplicar</button>
+                                        </form>
+                                    </div>
+                                        
+                                    
+                                </div>
+                            </div>
+                        </div>
                         <form action="" method="post">
+                            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal2" data-bs-whatever="@mdo">Desc.</button>
                             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
                                 Vuelto
                             </button>
@@ -250,7 +287,7 @@ if (isset($_REQUEST["btnCobrar"])) {
                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body">
-                                        <h3 style="color: green;">Total: <?php echo "$" . number_format(sumarTotal($aCompras), 2, ".", ","); ?></h3>
+                                        <h3 style="color: green;">Total: <?php echo "$" . number_format(isset($_POST["btnDescuento"]) ? $valorActual : sumarTotal($aCompras), 2, ".", ","); ?></h3>
                                         <form action="" method="post">
                                             <div class="col-12">
                                                 <label for="numVuelto">¿Con cuánto paga?</label>
@@ -282,7 +319,7 @@ if (isset($_REQUEST["btnCobrar"])) {
                             if ($aCompras != array()) {
                                 foreach ($aCompras as $id => $compra) {
                             ?>
-                                    <tr>                                       
+                                    <tr>
                                         <td><?php echo $compra["codigo"]; ?></td>
                                         <td><?php echo $compra["nombre"]; ?></td>
                                         <td style="<?php echo $compra["stock"] <= 10 ? "color: red;" : ""; ?>"><?php echo $compra["stock"] <= 10 ? "Stock Crítico" : $compra["stock"] ?></td>
@@ -295,7 +332,7 @@ if (isset($_REQUEST["btnCobrar"])) {
                             <?php } ?>
                         </tbody>
                     </table>
-                    <?php if($aCompras == array()){ ?>
+                    <?php if ($aCompras == array()) { ?>
                         <div class="alert alert-info text-center" role="alert">
                             Aún no hay productos en compra.
                         </div>
