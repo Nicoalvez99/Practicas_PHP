@@ -3,9 +3,7 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-if (!isset($_SESSION["nombre"])) {
-    //  header("Location: login.php");
-}
+include_once("sesion.php");
 
 if (file_exists("productos.json")) {
     $jsonProductos = file_get_contents("productos.json");
@@ -111,8 +109,7 @@ if (isset($_POST["btnVuelto"])) {
     $pago = trim($_POST["numVuelto"]);
     
     $vuelto = $pago - sumarTotal($aCompras);
-    print_r($valorActual);
-    exit;
+    
 } else {
     $vuelto = 0;
 }
@@ -136,6 +133,10 @@ if (isset($_REQUEST["btnCobrar"])) {
     $aCompras = array();
     $jsonCompra = json_encode($aCompras);
     file_put_contents("compra.json", $jsonCompra);
+}
+if(isset($_POST["btnCerrarSesion"])){
+    session_destroy();
+    header("Location: login.php");
 }
 ?>
 <!DOCTYPE html>
@@ -175,8 +176,9 @@ if (isset($_REQUEST["btnCobrar"])) {
                         Mi Cuenta
                     </a>
                     <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="#">Editar</a></li>
-                        <li><a class="dropdown-item" href="login.php">Cerrar sesion</a></li>
+                        <form action="" method="post">
+                            <li><a class="dropdown-item" href="#"><button name="btnCerrarSesion" class="btn btn-primary">Cerrar sesion</button></a></li>
+                        </form>
                     </ul>
                 </li>
             </div>

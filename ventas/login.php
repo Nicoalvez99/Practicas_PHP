@@ -2,14 +2,14 @@
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
+include_once "sesion.php";
 
-
-if ($_POST) {
+if ($_POST){
     $nombre = $_POST["txtNombre"];
     $contraseña = $_POST["txtContraseña"];
 
-    if ($nombre == "Nicolas" && $contraseña == "admin123") { 
-       // $_SESSION["nombre"] = "Nicolas";
+    if ($nombre == "admin" && $contraseña == "admin123") { 
+        $_SESSION["nombre"] = "Nicolas";
         header("Location: index.php");
     } else {
         $error = "";
